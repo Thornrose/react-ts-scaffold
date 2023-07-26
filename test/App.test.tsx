@@ -1,8 +1,10 @@
 import { render, screen } from '@testing-library/react';
 import { describe, it } from 'vitest';
+import { MemoryRouter } from 'react-router-dom';
 
-import App from '../src/App';
+import { App, BaseApp } from '../src/App';
 
+// testing react router library integration
 describe('App', () => {
   it('Renders "Hello!"', () => {
     // ARRANGE
@@ -14,5 +16,17 @@ describe('App', () => {
         level: 1,
       })
     ).toHaveTextContent('Hello!');
+  });
+  it('Renders not found if invalid path', () => {
+    render(
+      <MemoryRouter initialEntries={['/cabbage']}>
+        <BaseApp />
+      </MemoryRouter>
+    );
+    expect(
+      screen.getByRole('heading', {
+        level: 1,
+      })
+    ).toHaveTextContent('Nothing here :(');
   });
 });
